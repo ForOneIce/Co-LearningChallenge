@@ -137,9 +137,9 @@ function StatCard({
 }
 
 // ============ Week Status Badge ============
-function WeekStatusBadge({ deadline }: { deadline: string }) {
+function WeekStatusBadge({ week }: { week: { deadline: string; startDay: number; endDay: number } }) {
   const { t } = useI18n();
-  const status = getWeekStatus(deadline);
+  const status = getWeekStatus(week);
   const config = {
     expired: { text: t('expired'), class: 'bg-gray-100 text-gray-500' },
     active: { text: t('active'), class: 'bg-green-100 text-green-600 pulse-glow' },
@@ -197,7 +197,7 @@ function OverviewCalendar({ students }: { students: Student[] }) {
                   <span className="text-xs text-gray-400">
                     {t('deadline')}: {formatDeadline(week.deadline, lang)}
                   </span>
-                  <WeekStatusBadge deadline={week.deadline} />
+                  <WeekStatusBadge week={week} />
                 </div>
               </div>
 
@@ -627,7 +627,7 @@ function StudentLeaderboard({ students, onSelect }: { students: Student[]; onSel
                 </div>
               </div>
               <div className="flex items-center gap-1 shrink-0">
-                {[1, 2, 3, 4].map((wn) => (
+                {WEEKS.map((week) => week.weekNum).map((wn) => (
                   <span
                     key={wn}
                     className={`w-5 h-5 rounded text-[10px] font-bold flex items-center justify-center ${
@@ -667,7 +667,7 @@ function StudentDetail({
   const { t } = useI18n();
   const pct = Math.round((student.completedDays.length / TOTAL_DAYS) * 100);
   const weekSuccessCount = WEEKS.filter((w) => isWeeklySuccess(student, w.weekNum)).length;
-  const allSuccess = weekSuccessCount === 4;
+  const allSuccess = weekSuccessCount === WEEKS.length;
 
   return (
     <>
@@ -716,7 +716,7 @@ function StudentDetail({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <StatCard icon="📝" value={student.completedDays.length} label={t('completedDays')} gradient="from-orange-400 to-amber-500" delay={50} />
         <StatCard icon="📊" value={`${pct}%`} label={t('completionRate')} gradient="from-emerald-400 to-teal-500" delay={100} />
-        <StatCard icon="🏆" value={`${weekSuccessCount}/4`} label={t('weeksPassed')} gradient="from-violet-400 to-purple-500" delay={150} />
+        <StatCard icon="🏆" value={`${weekSuccessCount}/${WEEKS.length}`} label={t('weeksPassed')} gradient="from-violet-400 to-purple-500" delay={150} />
         <StatCard icon="⏰" value={student.lateWeeks.length} label={t('lateWeeks')} gradient="from-rose-400 to-red-500" delay={200} />
       </div>
 

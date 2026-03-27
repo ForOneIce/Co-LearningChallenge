@@ -14,7 +14,8 @@ export const WEEKS: WeekConfig[] = [
   { id: 'week1', weekNum: 1, startDay: 1, endDay: 7, deadline: '2026-03-09T00:00:00+08:00' },
   { id: 'week2', weekNum: 2, startDay: 8, endDay: 14, deadline: '2026-03-16T00:00:00+08:00' },
   { id: 'week3', weekNum: 3, startDay: 15, endDay: 21, deadline: '2026-03-23T00:00:00+08:00' },
-  { id: 'week4', weekNum: 4, startDay: 22, endDay: 30, deadline: '2026-03-30T00:00:00+08:00' },
+  { id: 'week4', weekNum: 4, startDay: 22, endDay: 28, deadline: '2026-03-30T00:00:00+08:00' },
+  { id: 'week5', weekNum: 5, startDay: 29, endDay: 30, deadline: '2026-04-01T00:00:00+08:00' },
 ];
 
 export const TOTAL_DAYS = 30;
@@ -227,7 +228,7 @@ export async function fetchDashboardData(token?: string): Promise<Student[]> {
           const match = label.match(/week(\d+)[_\-\s]?late/i);
           if (match) {
             const weekNum = parseInt(match[1], 10);
-            if (weekNum >= 1 && weekNum <= 4 && !lateWeeks.includes(weekNum)) {
+            if (weekNum >= 1 && weekNum <= WEEKS.length && !lateWeeks.includes(weekNum)) {
               lateWeeks.push(weekNum);
             }
           }
@@ -274,15 +275,12 @@ export function getWeekForDay(day: number): WeekConfig | undefined {
   return WEEKS.find((w) => day >= w.startDay && day <= w.endDay);
 }
 
-export function getWeekStatus(deadline: string): 'expired' | 'active' | 'upcoming' {
+export function getWeekStatus(week: Pick<WeekConfig, 'deadline' | 'startDay' | 'endDay'>): 'expired' | 'active' | 'upcoming' {
   const now = new Date();
-  const dl = new Date(deadline);
-  // Week is "active" if the deadline hasn't passed
-  // "upcoming" if the deadline is more than 7 days away... let's simplify
-  // Actually, let's just check if deadline has passed
+  const dl = new Date(week.deadline);
   if (now > dl) return 'expired';
-  // Check if the week's start is in the future by checking if deadline - 7days > now
-  const weekStart = new Date(dl.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const weekDays = week.endDay - week.startDay + 1;
+  const weekStart = new Date(dl.getTime() - weekDays * 24 * 60 * 60 * 1000);
   if (now < weekStart) return 'upcoming';
   return 'active';
 }
