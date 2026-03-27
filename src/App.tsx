@@ -387,7 +387,7 @@ function DailyChart({ students }: { students: Student[] }) {
             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(251,146,60,0.08)' }} />
             <Bar dataKey="count" radius={[4, 4, 0, 0]} maxBarSize={20}>
               {chartData.map((entry, index) => (
-                <rect key={index} fill={WEEK_COLORS[entry.week]?.bar || '#fb923c'} />
+                <rect key={index} fill={getWeekColor(entry.week).bar} />
               ))}
             </Bar>
           </BarChart>
@@ -398,7 +398,7 @@ function DailyChart({ students }: { students: Student[] }) {
       <div className="mt-3 flex flex-wrap items-center justify-center gap-4 text-xs text-gray-400">
         {WEEKS.map((w, i) => (
           <div key={w.id} className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded" style={{ background: WEEK_COLORS[i].bar }} />
+            <div className="w-3 h-3 rounded" style={{ background: getWeekColor(i).bar }} />
             <span>{t('weekLabel', { n: w.weekNum })}</span>
           </div>
         ))}
