@@ -32,6 +32,10 @@ const WEEK_COLORS = [
   { bg: 'bg-amber-50', border: 'border-amber-200', accent: 'text-amber-600', bar: '#fbbf24', gradient: 'from-amber-400 to-yellow-500', light: 'bg-amber-100' },
 ];
 
+function getWeekColor(index: number) {
+  return WEEK_COLORS[index % WEEK_COLORS.length];
+}
+
 function getHeatColor(ratio: number): string {
   if (ratio === 0) return 'bg-gray-100 text-gray-400';
   if (ratio < 0.25) return 'bg-emerald-100 text-emerald-700';
@@ -176,7 +180,7 @@ function OverviewCalendar({ students }: { students: Student[] }) {
 
       <div className="space-y-4">
         {WEEKS.map((week, wi) => {
-          const wc = WEEK_COLORS[wi];
+          const wc = getWeekColor(wi);
           const days = Array.from(
             { length: week.endDay - week.startDay + 1 },
             (_, i) => week.startDay + i
@@ -256,7 +260,7 @@ function StudentCalendar({ student }: { student: Student }) {
 
       <div className="space-y-4">
         {WEEKS.map((week, wi) => {
-          const wc = WEEK_COLORS[wi];
+          const wc = getWeekColor(wi);
           const days = Array.from(
             { length: week.endDay - week.startDay + 1 },
             (_, i) => week.startDay + i
@@ -453,7 +457,7 @@ function WeeklySuccessSection({ students }: { students: Student[] }) {
         {WEEKS.map((week, wi) => {
           const successStudents = getWeeklySuccessStudents(students, week.weekNum);
           const isExpanded = expandedWeek === week.weekNum;
-          const wc = WEEK_COLORS[wi];
+          const wc = getWeekColor(wi);
 
           const exportText = successStudents.length > 0
             ? `${t('weekLabel', { n: week.weekNum })} ${t('weeklySuccessList')}\n${'─'.repeat(40)}\n${
@@ -730,7 +734,7 @@ function StudentDetail({
           const isLate = student.lateWeeks.includes(week.weekNum);
           const completed = getStudentWeekCompletedDays(student, week.weekNum);
           const total = getWeekTotalDays(week.weekNum);
-          const wc = WEEK_COLORS[wi];
+          const wc = getWeekColor(wi);
 
           return (
             <div
