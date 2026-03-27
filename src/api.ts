@@ -275,12 +275,21 @@ export function getWeekForDay(day: number): WeekConfig | undefined {
   return WEEKS.find((w) => day >= w.startDay && day <= w.endDay);
 }
 
-export function getWeekStatus(week: Pick<WeekConfig, 'deadline' | 'startDay' | 'endDay'>): 'expired' | 'active' | 'upcoming' {
+export function getWeekStatus(deadline: string): 'expired' | 'active' | 'upcoming' {
   const now = new Date();
-  const dl = new Date(week.deadline);
+  const dl = new Date(deadline);
   if (now > dl) return 'expired';
-  const weekDays = week.endDay - week.startDay + 1;
-  const weekStart = new Date(dl.getTime() - weekDays * 24 * 60 * 60 * 1000);
+
+  const weekIndex = WEEKS.findIndex((w) => w.deadline === deadline);
+  if (weekIndex > 0) {
+    // Use previous week's deadline as the start boundary so variable-length weeks
+    // (such as the final 2-day week) are judged correctly.
+    const startBoundary = new Date(WEEKS[weekIndex - 1].deadline);
+    if (now < startBoundary) return 'upcoming';
+    return 'active';
+  }
+
+  const weekStart = new Date(dl.getTime() - 7 * 24 * 60 * 60 * 1000);
   if (now < weekStart) return 'upcoming';
   return 'active';
 }
