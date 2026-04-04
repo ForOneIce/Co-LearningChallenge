@@ -571,6 +571,190 @@ function WeeklySuccessSection({ students }: { students: Student[] }) {
   );
 }
 
+// ============ Perfect Attendance Section ============
+function PerfectAttendanceSection({ students, onSelect }: { students: Student[]; onSelect: (s: string) => void }) {
+  const { t } = useI18n();
+
+  const exportText = students.length > 0
+    ? `${t('perfectAttendanceList')}\n${'─'.repeat(40)}\n${
+        students
+          .map((s) => `${s.nickname}\t${s.githubUsername || '-'}\thttps://github.com/${s.githubUsername}`)
+          .join('\n')
+      }`
+    : '';
+
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6 animate-slide-up" style={{ animationDelay: '600ms' }}>
+      <div className="flex flex-wrap items-center justify-between mb-2 gap-2">
+        <h2 className="text-xl font-bold text-gray-800">{t('perfectAttendanceList')}</h2>
+        <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+          students.length > 0 ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-100 text-gray-400'
+        }`}>
+          🎖️ {students.length}
+        </span>
+      </div>
+      <p className="text-sm text-gray-400 mb-5">{t('perfectAttendanceDesc')}</p>
+
+      {students.length > 0 ? (
+        <>
+          <div className="flex justify-end mb-3">
+            <CopyButton text={exportText} label={t('copyPerfectList')} />
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left py-2 px-3 text-gray-400 font-medium">#</th>
+                  <th className="text-left py-2 px-3 text-gray-400 font-medium">{t('nickname')}</th>
+                  <th className="text-left py-2 px-3 text-gray-400 font-medium">{t('githubAccount')}</th>
+                  <th className="text-left py-2 px-3 text-gray-400 font-medium">{t('completedDays')}</th>
+                  <th className="text-left py-2 px-3 text-gray-400 font-medium">{t('weeksPassed')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {students.map((s, i) => (
+                  <tr
+                    key={s.nickname}
+                    className="border-b border-gray-50 hover:bg-emerald-50/50 transition-colors cursor-pointer"
+                    onClick={() => onSelect(s.nickname)}
+                  >
+                    <td className="py-2.5 px-3 text-gray-400">{i + 1}</td>
+                    <td className="py-2.5 px-3 font-medium text-gray-700">
+                      <span className="inline-flex items-center gap-1.5">
+                        <span className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-300 to-teal-400 flex items-center justify-center text-white text-xs font-bold">
+                          {s.nickname.charAt(0).toUpperCase()}
+                        </span>
+                        {s.nickname}
+                        <span className="text-sm">🏆</span>
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3">
+                      {s.githubUsername ? (
+                        <a
+                          href={`https://github.com/${s.githubUsername}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:text-blue-700 hover:underline"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          @{s.githubUsername}
+                        </a>
+                      ) : (
+                        <span className="text-gray-300">-</span>
+                      )}
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <span className="text-emerald-600 font-medium">{s.completedDays.length}/{TOTAL_DAYS}</span>
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <span className="text-emerald-600 font-medium">{WEEKS.length}/{WEEKS.length}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : (
+        <div className="text-center py-8 text-gray-400">
+          <span className="text-3xl">🌿</span>
+          <p className="mt-2">{t('noPerfectStudents')}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ============ Perfect Attendance Section ============
+function PerfectAttendanceSection({ students, onSelect }: { students: Student[]; onSelect: (s: string) => void }) {
+  const { t } = useI18n();
+
+  const exportText = students.length > 0
+    ? `${t('perfectAttendanceList')}\n${'─'.repeat(40)}\n${
+        students
+          .map((s) => `${s.nickname}\t${s.githubUsername || '-'}\thttps://github.com/${s.githubUsername}`)
+          .join('\n')
+      }`
+    : '';
+
+  return (
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6 animate-slide-up" style={{ animationDelay: '600ms' }}>
+      <div className="flex flex-wrap items-center justify-between mb-2 gap-2">
+        <h2 className="text-xl font-bold text-gray-800">{t('perfectAttendanceList')}</h2>
+        <span className={`px-3 py-1 rounded-full text-sm font-bold ${
+          students.length > 0 ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-100 text-gray-400'
+        }`}>
+          🎖️ {students.length}
+        </span>
+      </div>
+      <p className="text-sm text-gray-400 mb-5">{t('perfectAttendanceDesc')}</p>
+
+      {students.length > 0 ? (
+        <>
+          <div className="flex justify-end mb-3">
+            <CopyButton text={exportText} label={t('copyPerfectList')} />
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="text-left py-2 px-3 text-gray-400 font-medium">#</th>
+                  <th className="text-left py-2 px-3 text-gray-400 font-medium">{t('nickname')}</th>
+                  <th className="text-left py-2 px-3 text-gray-400 font-medium">{t('githubAccount')}</th>
+                  <th className="text-left py-2 px-3 text-gray-400 font-medium">{t('completedDays')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {students.map((s, i) => (
+                  <tr
+                    key={s.nickname}
+                    onClick={() => onSelect(s.nickname)}
+                    className="border-b border-gray-50 hover:bg-emerald-50/50 transition-colors cursor-pointer"
+                  >
+                    <td className="py-2.5 px-3 text-gray-400">{i + 1}</td>
+                    <td className="py-2.5 px-3 font-medium text-gray-700">
+                      <span className="inline-flex items-center gap-1.5">
+                        <span className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-bold">
+                          {s.nickname.charAt(0).toUpperCase()}
+                        </span>
+                        {s.nickname}
+                        <span className="text-sm">🏆</span>
+                      </span>
+                    </td>
+                    <td className="py-2.5 px-3">
+                      {s.githubUsername ? (
+                        <a
+                          href={`https://github.com/${s.githubUsername}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:text-blue-700 hover:underline"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          @{s.githubUsername}
+                        </a>
+                      ) : (
+                        <span className="text-gray-300">-</span>
+                      )}
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <span className="text-emerald-600 font-medium">{s.completedDays.length}/{TOTAL_DAYS}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : (
+        <div className="text-center py-8 text-gray-400">
+          <span className="text-3xl">🌿</span>
+          <p className="mt-2">{t('noPerfectStudents')}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ============ Student Leaderboard ============
 function StudentLeaderboard({ students, onSelect }: { students: Student[]; onSelect: (s: string) => void }) {
   const { t } = useI18n();
@@ -880,8 +1064,11 @@ function Dashboard() {
     () => (students.length > 0 ? Math.round((totalSubmissions / (students.length * TOTAL_DAYS)) * 100) : 0),
     [students, totalSubmissions]
   );
-  const fullCompletionCount = useMemo(
-    () => students.filter((s) => s.completedDays.length === TOTAL_DAYS).length,
+  const perfectStudents = useMemo(
+    () => students.filter((s) =>
+      s.completedDays.length === TOTAL_DAYS &&
+      WEEKS.every((w) => isWeeklySuccess(s, w.weekNum))
+    ),
     [students]
   );
 
@@ -972,7 +1159,7 @@ function Dashboard() {
               <StatCard icon="👥" value={students.length} label={t('totalStudents')} gradient="from-orange-400 to-amber-500" delay={0} />
               <StatCard icon="📝" value={totalSubmissions} label={t('totalSubmissions')} gradient="from-rose-400 to-pink-500" delay={50} />
               <StatCard icon="📊" value={`${avgCompletion}%`} label={t('avgCompletion')} gradient="from-violet-400 to-purple-500" delay={100} />
-              <StatCard icon="🏆" value={fullCompletionCount} label={t('fullCompletion')} gradient="from-emerald-400 to-teal-500" delay={150} />
+              <StatCard icon="🏆" value={perfectStudents.length} label={t('perfectAttendance')} gradient="from-emerald-400 to-teal-500" delay={150} />
             </div>
 
             {/* Calendar */}
@@ -990,6 +1177,9 @@ function Dashboard() {
               <WeeklySuccessSection students={students} />
               <StudentLeaderboard students={students} onSelect={setSelectedStudent} />
             </div>
+
+            {/* Perfect Attendance Section */}
+            <PerfectAttendanceSection students={perfectStudents} onSelect={setSelectedStudent} />
           </>
         )}
       </main>

@@ -74,6 +74,11 @@ const translations = {
     apply: '应用',
     configToken: '配置 Token',
     rateLimitHint: '配置 GitHub Token 可解除 API 请求限制',
+    perfectAttendance: '严格全勤学员',
+    perfectAttendanceList: '🎖️ 严格全勤名单',
+    perfectAttendanceDesc: '30 天全部提交 + 每周均按时闯关成功（无超时）',
+    noPerfectStudents: '暂无严格全勤学员',
+    copyPerfectList: '📋 复制全勤名单',
   },
   en: {
     title: 'Co-Learning Challenge',
@@ -146,6 +151,11 @@ const translations = {
     apply: 'Apply',
     configToken: 'Configure Token',
     rateLimitHint: 'Configure a GitHub Token to remove API rate limits',
+    perfectAttendance: 'Perfect',
+    perfectAttendanceList: '🎖️ Perfect Attendance',
+    perfectAttendanceDesc: '30 days done + all weeks passed + no late',
+    noPerfectStudents: 'No perfect attendance yet',
+    copyPerfectList: '📋 Copy List',
   },
 } as const;
 
